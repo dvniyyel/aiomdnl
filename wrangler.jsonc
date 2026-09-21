@@ -1,0 +1,22 @@
+{
+  "$schema": "node_modules/wrangler/config-schema.json",
+  "name": "aiomdnl",
+  "main": "src/index.ts",
+  "compatibility_date": "2025-06-01",
+  "compatibility_flags": ["nodejs_compat"],
+  "rules": [{ "type": "Text", "globs": ["**/*.sql"] }],
+  "d1_databases": [{ "binding": "DB", "database_name": "aiomdnl", "migrations_dir": "migrations","database_id": "47f161df-554f-4889-ad4a-d88a6c23fb96" }],
+  "triggers": { "crons": ["* * * * *"] },
+  "queues": {
+    "producers": [{ "binding": "RILL_JOBS", "queue": "aiom-dnl" }],
+    "consumers": [{
+      "queue": "aiom-dnl",
+      "max_batch_size": 1,
+      "max_batch_timeout": 1,
+      "max_retries": 2,
+      "max_concurrency": 1
+    }]
+  },
+  "observability": { "enabled": true },
+  "vars": {}
+}
